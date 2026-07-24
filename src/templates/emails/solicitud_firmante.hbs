@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tu cuenta ha sido creada</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f3f4f6;
+      font-family: Arial, sans-serif;
+      color: #111827;
+    }
+    .wrapper {
+      width: 100%;
+      padding: 24px 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border-radius: 8px;
+      padding: 24px 28px;
+      border: 1px solid #e5e7eb;
+    }
+    .title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: #111827;
+    }
+    .muted {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 18px;
+    }
+    .data-box {
+      background-color: #f9fafb;
+      padding: 12px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      border: 1px solid #e5e7eb;
+      margin: 12px 0 18px;
+    }
+    .data-box b {
+      display: inline-block;
+      min-width: 140px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 10px 18px;
+      background-color: #2563eb;
+      color: #ffffff !important;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="container">
+      <div class="title">Buen día, {{notifyName}}:</div>
+
+      <p>Se ha generado una solicitud de firma para la aplicación <strong class="highlight">{{appName}}</strong>.</p>
+
+      <p>Tu firma es requerida para continuar con el proceso. Por favor, ingresa al sistema utilizando el siguiente enlace:</p>
+
+      <div class="btn-container">
+        <a href="{{urlFirma}}" class="btn">Firmar Documento</a>
+      </div>
+
+      <div class="footer">
+        <p>Si el botón no funciona, puedes copiar y pegar el siguiente enlace en tu navegador:</p>
+        <p style="word-break: break-all; color: #007bff;">{{urlFirma}}</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tu cuenta ha sido creada</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f3f4f6;
+      font-family: Arial, sans-serif;
+      color: #111827;
+    }
+    .wrapper {
+      width: 100%;
+      padding: 24px 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border-radius: 8px;
+      padding: 24px 28px;
+      border: 1px solid #e5e7eb;
+    }
+    .title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: #111827;
+    }
+    .muted {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 18px;
+    }
+    .data-box {
+      background-color: #f9fafb;
+      padding: 12px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      border: 1px solid #e5e7eb;
+      margin: 12px 0 18px;
+    }
+    .data-box b {
+      display: inline-block;
+      min-width: 140px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 10px 18px;
+      background-color: #2563eb;
+      color: #ffffff !important;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="container">
+      <div class="title">Buen día {{notifyName}},</div>
+
+      <p>Te damos la bienvenida al sistema de <strong>{{appName}}</strong>.</p>
+
+      <p>Se ha completado correctamente tu registro, ya puedes acceder con tus credenciales temporales:</p>
+
+      <div class="data-box">
+        <div><b>Usuario:</b> {{username}}</div>
+        <div><b>Contraseña temporal:</b> {{plainPassword}}</div>
+        {{#if code}}
+          <!--<div><b>Código:</b> {{code}}</div>-->
+        {{/if}}
+      </div>
+
+      <p>
+        Te recomendamos iniciar sesión para realizar el cambio de tu contraseña y explorar las funcionalidades disponibles y actualizar tu perfil si es necesario.
+      </p>
+
+      <p>
+        Puedes acceder desde el siguiente enlace:
+      </p>
+
+      <p>
+        <a href="{{loginUrl}}" class="btn">Ingresar</a>
+      </p>
+
+      <p>Si necesitas ayuda o tienes alguna duda sobre el uso del sistema, puedes consultar la guia rápida <a href="">aquí</a> o contactar con el equipo de soporte.</p>
+
+      <p class="muted">
+        Si no solicitaste esta cuenta, puedes ignorar este mensaje.
+        Este correo fue generado automáticamente.
+      </p>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,1 @@
+"Usando 01-nest -standars.md y 02-data-schema.md como guía, crea los módulos tipos-vehiculos y marcas-tipos -vehiculos de forma secuencial. Asegura que las relaciones y entidades sigan estrictamente la estructura definida en el esquema."
