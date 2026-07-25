@@ -6,6 +6,9 @@ import { TypeOrmModule } from '@nestjs/typeorm'; // Importa TypeOrmModule
 import { BullModule } from '@nestjs/bull';
 import { ScheduleModule } from '@nestjs/schedule';
 import { EstadoModule } from './modules/estados/estado.module';
+import { ProyectoModule } from './modules/proyectos/proyecto.module';
+import { TareaModule } from './modules/tareas/tarea.module';
+import { RegistroTareaModule } from './modules/registros-tareas/registro-tarea.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -57,6 +60,9 @@ import { EstadoModule } from './modules/estados/estado.module';
     }),
     ScheduleModule.forRoot(), // Habilita los Cron Jobs en NestJS
     EstadoModule,
+    ProyectoModule,
+    TareaModule,
+    RegistroTareaModule,
   ],
   controllers: [AppController],
   providers: [
