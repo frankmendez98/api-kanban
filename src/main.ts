@@ -58,24 +58,49 @@ async function bootstrap() {
   }
 
   // --- Conexión a Redis para WebSockets ---
-  let pubClient: RedisClientType;
-  let subClient: RedisClientType;
-  try {
-    console.log(`Intentando conectar Redis en: ${redisUrl}`);
-    pubClient = createClient({ url: redisUrl }) as RedisClientType;
-    subClient = pubClient.duplicate() as RedisClientType;
+  // --- Conexión a Redis para WebSockets ---
+  let pubClient: RedisClientType | undefined;
+  let subClient: RedisClientType | undefined;
+  
+  const maxRetries = 5;
+  let retries = 0;
 
-    pubClient.on('error', (err) =>
-      console.error('Redis Publisher Error:', err),
-    );
-    subClient.on('error', (err) =>
-      console.error('Redis Subscriber Error:', err),
-    );
+  while (retries < maxRetries) {
+    try {
+      console.log(`Intentando conectar Redis en: ${redisUrl} (Intento ${retries + 1}/${maxRetries})`);
+      const tempPubClient = createClient({ url: redisUrl }) as RedisClientType;
+      const tempSubClient = tempPubClient.duplicate() as RedisClientType;
 
-    await Promise.all([pubClient.connect(), subClient.connect()]);
-    console.log('Clientes Redis conectados exitosamente en bootstrap.');
-  } catch (err) {
-    console.error('Error al conectar con Redis:', err);
+      tempPubClient.on('error', (err) =>
+        console.error('Redis Publisher Error:', err.message),
+      );
+      tempSubClient.on('error', (err) =>
+        console.error('Redis Subscriber Error:', err.message),
+      );
+
+      await Promise.all([tempPubClient.connect(), tempSubClient.connect()]);
+
+      // Asignamos a las variables principales una vez conectados con éxito
+      pubClient = tempPubClient;
+      subClient = tempSubClient;
+
+      console.log('Clientes Redis conectados exitosamente en bootstrap.');
+      break;
+    } catch (err: any) {
+      retries++;
+      console.error(`Fallo al conectar con Redis (Intento ${retries}):`, err.message);
+      if (retries >= maxRetries) {
+        console.error('No se pudo establecer conexión con Redis tras varios intentos.');
+        process.exit(1);
+      }
+      // Espera 2 segundos antes de reintentar
+      await new Promise(resolve => setTimeout(resolve, 2000));
+    }
+  }
+
+  // Validación final por seguridad antes de instanciar el adaptador
+  if (!pubClient || !subClient) {
+    console.error('Error crítico: Clientes de Redis no inicializados.');
     process.exit(1);
   }
 

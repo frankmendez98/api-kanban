@@ -14,6 +14,7 @@ import {
 import { PaginationHeaderInterceptor } from 'src/common/interceptors/pagination-header.interceptor';
 import { TareaService } from './tarea.service';
 import { CreateTareaDto } from './dto/create-tarea.dto';
+import { CreateTareaBulkDto } from './dto/create-tarea-bulk.dto';
 import { UpdateTareaDto } from './dto/update-tarea.dto';
 import { TareaIndexDto } from './dto/tarea-index.dto';
 import { TareaEstadoUpdateDto } from './dto/tarea-estado-update.dto';
@@ -27,6 +28,12 @@ export class TareaController {
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() body: CreateTareaDto): Promise<Tarea> {
     return this.tareaService.create(body);
+  }
+
+  @Post('bulk')
+  @HttpCode(HttpStatus.CREATED)
+  async createBulk(@Body() body: CreateTareaBulkDto): Promise<Tarea[]> {
+    return this.tareaService.createBulk(body.tareas);
   }
 
   @Get()

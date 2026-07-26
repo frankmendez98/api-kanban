@@ -17,7 +17,15 @@ export class RedisIoAdapter extends IoAdapter {
   // Aquí es donde inyectamos el adaptador de Redis
   createIOServer(port: number, options?: any) {
     // Llama al método del padre (IoAdapter) para crear la instancia base del servidor de Socket.IO.
-    const server = super.createIOServer(port, options);
+    const server = super.createIOServer(port, {
+      ...options,
+      path: '/socket.io/',
+      cors: {
+        origin: '*',
+        methods: ['GET', 'POST'],
+        credentials: true,
+      },
+    });
 
     // Aplica el adaptador de Redis (usando los clientes ya conectados) al servidor de Socket.IO.
     // Esto permite que el servidor de Socket.IO maneje la comunicación entre múltiples instancias

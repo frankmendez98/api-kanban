@@ -1,7 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeepPartial, Repository } from 'typeorm';
 import { BaseService } from 'src/services/base_service.service';
+import { CreateTareaDto } from './dto/create-tarea.dto';
 import { Tarea } from './tarea.entity';
 import { TareaEstadoUpdateDto } from './dto/tarea-estado-update.dto';
 
@@ -42,6 +43,33 @@ export class TareaService extends BaseService<Tarea> {
     this.validarEstado(body.estado);
     tarea.estado = body.estado;
     return this.repository.save(tarea);
+  }
+
+  async createBulk(createDtos: CreateTareaDto[]): Promise<Tarea[]> {
+    const tareasValidadas: DeepPartial<Tarea>[] = createDtos.map((dto) => {
+      if (dto.tipo_tarea !== undefined) {
+        this.validarTipoTarea(dto.tipo_tarea);
+      }
+      if (dto.estado !== undefined) {
+        this.validarEstado(dto.estado);
+      }
+      console.log(dto);
+      
+      return this.repository.create({
+        id_proyecto: dto.id_proyecto,
+        nombre_modulo: dto.nombre_modulo,
+        nombre_entidad: dto.nombre_entidad,
+        titulo: dto.titulo,
+        descripcion: dto.descripcion,
+        tipo_tarea: dto.tipo_tarea,
+        estado: dto.estado,
+        prioridad: dto.prioridad,
+        hash_commit: dto.hash_commit,
+        tiempo_ejecucion_seg: dto.tiempo_ejecucion_seg,
+      });
+    });
+
+    return this.repository.save(tareasValidadas);
   }
 
   private validarEstado(estado: string): void {
