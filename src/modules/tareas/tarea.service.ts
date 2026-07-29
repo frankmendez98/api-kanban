@@ -7,7 +7,7 @@ import { Tarea } from './tarea.entity';
 import { TareaEstadoUpdateDto } from './dto/tarea-estado-update.dto';
 
 const ESTADOS_PERMITIDOS = ['pending', 'in-progress', 'completed', 'failed'];
-const TIPOS_TAREA_PERMITIDOS = ['create', 'patch'];
+const TIPOS_TAREA_PERMITIDOS = ['create', 'update'];
 
 @Injectable()
 export class TareaService extends BaseService<Tarea> {

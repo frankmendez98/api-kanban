@@ -16,6 +16,7 @@ import { ProyectoService } from './proyecto.service';
 import { CreateProyectoDto } from './dto/create-proyecto.dto';
 import { UpdateProyectoDto } from './dto/update-proyecto.dto';
 import { ProyectoIndexDto } from './dto/proyecto-index.dto';
+import { ProyectoEstadoUpdateDto } from './dto/proyecto-estado-update.dto';
 import { Proyecto } from './proyecto.entity';
 
 @Controller('proyectos')
@@ -48,5 +49,14 @@ export class ProyectoController {
     @Body() body: UpdateProyectoDto,
   ): Promise<Proyecto> {
     return this.proyectoService.update(id, body);
+  }
+
+  @Put(':id/estados')
+  @HttpCode(HttpStatus.OK)
+  async updateEstado(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: ProyectoEstadoUpdateDto,
+  ): Promise<Proyecto> {
+    return this.proyectoService.updateEstado(id, body);
   }
 }
