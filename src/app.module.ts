@@ -10,6 +10,7 @@ import { ProyectoModule } from './modules/proyectos/proyecto.module';
 import { TareaModule } from './modules/tareas/tarea.module';
 import { RegistroTareaModule } from './modules/registros-tareas/registro-tarea.module';
 import { SocketsGateway } from './events/socket.gateway';
+import { EventsModule } from './modules/events/events.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -64,11 +65,11 @@ import { SocketsGateway } from './events/socket.gateway';
     ProyectoModule,
     TareaModule,
     RegistroTareaModule,
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [
     AppService,
-    SocketsGateway,
     // {
     //   provide: APP_PIPE, // Esto hace que el ValidationPipe se aplique globalmente
     //   useClass: ValidationPipe,

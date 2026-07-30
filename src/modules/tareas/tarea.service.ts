@@ -5,6 +5,7 @@ import { BaseService } from 'src/services/base_service.service';
 import { CreateTareaDto } from './dto/create-tarea.dto';
 import { Tarea } from './tarea.entity';
 import { TareaEstadoUpdateDto } from './dto/tarea-estado-update.dto';
+import { SocketsGateway } from 'src/events/socket.gateway';
 
 const ESTADOS_PERMITIDOS = ['pending', 'in-progress', 'completed', 'failed'];
 const TIPOS_TAREA_PERMITIDOS = ['create', 'update'];
@@ -14,6 +15,7 @@ export class TareaService extends BaseService<Tarea> {
   constructor(
     @InjectRepository(Tarea)
     private tareaRepository: Repository<Tarea>,
+    private readonly socketsGateway: SocketsGateway,
   ) {
     super(tareaRepository);
   }
@@ -42,6 +44,9 @@ export class TareaService extends BaseService<Tarea> {
     const tarea = await this.exists(id);
     this.validarEstado(body.estado);
     tarea.estado = body.estado;
+    this.socketsGateway.server.emit(`kanban-event`, {
+      estado: `${body.estado}`,
+    });
     return this.repository.save(tarea);
   }
 
@@ -54,7 +59,7 @@ export class TareaService extends BaseService<Tarea> {
         this.validarEstado(dto.estado);
       }
       console.log(dto);
-      
+
       return this.repository.create({
         id_proyecto: dto.id_proyecto,
         nombre_modulo: dto.nombre_modulo,
@@ -68,7 +73,9 @@ export class TareaService extends BaseService<Tarea> {
         tiempo_ejecucion_seg: dto.tiempo_ejecucion_seg,
       });
     });
-
+    this.socketsGateway.server.emit(`kanban-event`, {
+      estado: `${'pending'}`,
+    });
     return this.repository.save(tareasValidadas);
   }
 
